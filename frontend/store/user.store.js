@@ -90,6 +90,7 @@ export const useUserStore = create((set, get) => ({
       if (response.status === 400) throw new Error(response.data.message);
       set({
         user: response.data.user,
+        token: token,
       });
     } catch (error) {
       localStorage.removeItem("token");

@@ -13,9 +13,11 @@ const ProtectedRoute = ({ children }) => {
 
   const authPath = pathname.includes("auth");
 
+
   if (user && authPath) {
     router.replace("/");
   }
+  if(!user) router.replace('/auth/login')  
   return <>{children}</>;
 };
 
