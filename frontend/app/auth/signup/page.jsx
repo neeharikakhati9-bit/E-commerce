@@ -1,38 +1,47 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import Link from "next/link"
+import Link from "next/link";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
+import { useUserStore } from "@/store/user.store";
 
 const SignupPage = () => {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  })
-  const [submitted, setSubmitted] = useState(false)
+  const [name, setname] = useState("");
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
+  const [cpassword, setcpassword] = useState("");
+  const { signup } = useUserStore();
 
-  const handleChange = (event) => {
-    const { name, value } = event.target
-    setForm((prev) => ({ ...prev, [name]: value }))
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    setSubmitted(true)
-  }
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log({
+      name,
+      email,
+      password,
+      cpassword,
+    });
+    await signup({name, email, password, cpassword});
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4 py-10">
       <Card className="w-full max-w-xl">
         <CardHeader>
           <CardTitle>Create your account</CardTitle>
-          <CardDescription>Sign up to access your dashboard and manage your items.</CardDescription>
+          <CardDescription>
+            Sign up to access your dashboard and manage your items.
+          </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-6">
           <form onSubmit={handleSubmit} className="grid gap-5">
@@ -41,8 +50,10 @@ const SignupPage = () => {
               <Input
                 id="name"
                 name="name"
-                value={form.name}
-                onChange={handleChange}
+                value={name}
+                onChange={(event) => {
+                  setname(event.target.value);
+                }}
                 placeholder="John Doe"
                 autoComplete="name"
               />
@@ -53,8 +64,8 @@ const SignupPage = () => {
                 id="email"
                 name="email"
                 type="email"
-                value={form.email}
-                onChange={handleChange}
+                value={email}
+                onChange={(event) => setemail(event.target.value)}
                 placeholder="jane@example.com"
                 autoComplete="email"
               />
@@ -66,8 +77,8 @@ const SignupPage = () => {
                   id="password"
                   name="password"
                   type="password"
-                  value={form.password}
-                  onChange={handleChange}
+                  value={password}
+                  onChange={(event) => setpassword(event.target.value)}
                   placeholder="Enter password"
                   autoComplete="new-password"
                 />
@@ -78,8 +89,8 @@ const SignupPage = () => {
                   id="confirmPassword"
                   name="confirmPassword"
                   type="password"
-                  value={form.confirmPassword}
-                  onChange={handleChange}
+                  value={cpassword}
+                  onChange={(event) => setcpassword(event.target.value)}
                   placeholder="Confirm password"
                   autoComplete="new-password"
                 />
@@ -89,22 +100,19 @@ const SignupPage = () => {
               Create account
             </Button>
           </form>
-
-          {submitted ? (
-            <div className="rounded-2xl border border-green-200 bg-green-50 p-4 text-sm text-green-900">
-              Thanks for signing up! We'll send a confirmation email once your account is activated.
-            </div>
-          ) : null}
         </CardContent>
         <CardFooter className="flex flex-col gap-2 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>Already have an account?</p>
-          <Link href="/auth/login" className="text-primary underline hover:text-primary/80">
+          <Link
+            href="/auth/login"
+            className="text-primary underline hover:text-primary/80"
+          >
             Log in
           </Link>
         </CardFooter>
       </Card>
     </div>
-  )
-}
+  );
+};
 
 export default SignupPage;
