@@ -14,8 +14,11 @@ import connectDB from "./conn/db.js";
 
 // importing routes
 import AuthRouter from "./routes/user.route.js"
+import Itemrouter from "./routes/item.routes.js"
 
-app.use('/api/user', AuthRouter)
+
+app.use('/api/user', AuthRouter) 
+app.use('/api/items',Itemrouter)
 app.listen(PORT, () => { //listen is used to start the server
     connectDB()
   console.log(`Listening to port ${PORT}`);
